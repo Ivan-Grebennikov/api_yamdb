@@ -36,7 +36,7 @@ class Command(BaseCommand):
 
         for model, filename in csv_data_files:
             filepath = os.path.join(
-                settings.BASE_DIR, 'static\data', filename
+                settings.BASE_DIR, 'static\\data', filename
             )
 
             self.stdout.write(
@@ -50,8 +50,7 @@ class Command(BaseCommand):
 
                 for row in csv_reader:
                     object_data = self.prepare_model_object_data(row)
-                    obj = model.objects.get_or_create(**object_data)
-                    #self.stdout.write(self.style.SQL_FIELD(obj))
+                    model.objects.get_or_create(**object_data)
 
                 self.stdout.write('\n')
 
