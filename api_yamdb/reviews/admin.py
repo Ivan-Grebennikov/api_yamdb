@@ -4,7 +4,7 @@ from .models import Comment, Review
 
 
 class CommentAdmin(admin.ModelAdmin):
-    """Управления комментариями к отзывам."""
+    """Управление комментариями к отзывам."""
 
     list_display = (
         'pk',
