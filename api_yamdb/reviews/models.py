@@ -82,6 +82,14 @@ class Review(models.Model):
         related_name='reviews'
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['author', 'title'],
+                name='unique_review'
+            ),
+        ]
+
     def __str__(self):
         return self.text[:15]
 
@@ -99,7 +107,7 @@ class Comment(models.Model):
     review = models.ForeignKey(
         Review,
         on_delete=models.CASCADE,
-        related_name='reviews'
+        related_name='comments'
     )
 
     def __str__(self):
