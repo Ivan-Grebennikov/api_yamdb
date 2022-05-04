@@ -34,6 +34,11 @@ class Title(models.Model):
         blank=True,
         null=True
     )
+    genre = models.ManyToManyField(
+        Genre,
+        verbose_name='Жанр',
+        through='GenreTitle'
+    )
 
     def __str__(self):
         return self.name
