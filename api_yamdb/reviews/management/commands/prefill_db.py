@@ -3,7 +3,9 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+
 from reviews import models
+from users.serializers import generate_confirmation_code
 
 
 class Command(BaseCommand):
@@ -36,7 +38,7 @@ class Command(BaseCommand):
 
         for model, filename in csv_data_files:
             filepath = os.path.join(
-                settings.BASE_DIR, 'static/data', filename
+                settings.BASE_DIR, 'static', 'data', filename
             )
 
             self.stdout.write(
@@ -45,15 +47,12 @@ class Command(BaseCommand):
                 )
             )
 
-            with open(filepath, newline='') as csv_file:
+            with open(filepath, newline='', encoding='utf-8') as csv_file:
                 csv_reader = csv.DictReader(csv_file)
 
                 for row in csv_reader:
-                    object_data = self.prepare_model_object_data(row)
-                    obj = model.objects.get_or_create(**object_data)
-                    self.stdout.write(self.style.SQL_FIELD(obj))
-
-                self.stdout.write('\n')
+                    object_data = self.prepare_model_object_data(model, row)
+                    model.objects.get_or_create(**object_data)
 
         self.stdout.write(
             self.style.SUCCESS(
@@ -61,7 +60,7 @@ class Command(BaseCommand):
             )
         )
 
-    def prepare_model_object_data(self, csv_row_dict):
+    def prepare_model_object_data(self, class_model, csv_row_dict):
         foreign_keys = {
             'category': (models.Category, 'category'),
             'title_id': (models.Title, 'title'),
@@ -79,5 +78,8 @@ class Command(BaseCommand):
                 object_data[field_name] = obj
             else:
                 object_data[column] = value
+
+        if class_model == models.User:
+            object_data['confirmation_code'] = generate_confirmation_code()
 
         return object_data
