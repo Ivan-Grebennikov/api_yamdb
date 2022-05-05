@@ -83,6 +83,7 @@ class Review(models.Model):
     )
 
     class Meta:
+        ordering = ['-id']
         constraints = [
             models.UniqueConstraint(
                 fields=['author', 'title'],
@@ -109,6 +110,9 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments'
     )
+
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return self.text[:15]
