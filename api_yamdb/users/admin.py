@@ -3,4 +3,17 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
-admin.site.register(User, UserAdmin)
+
+class YamdbUserAdmin(UserAdmin):
+    list_display = (
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'confirmation_code',
+        'role',
+        'is_staff'
+    )
+
+
+admin.site.register(User, YamdbUserAdmin)

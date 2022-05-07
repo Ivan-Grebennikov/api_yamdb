@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from .models import Comment, Review, Genre, Title, Category, GenreTitle
+from .models import (
+    Category, Comment, Genre,
+    GenreTitle, Review, Title
+)
 
 
 class CommentAdmin(admin.ModelAdmin):
-    """Управление комментариями к отзывам."""
-
     list_display = (
         'pk',
         'text',
@@ -18,8 +19,6 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    """Управление отзывами пользователей."""
-
     list_display = (
         'pk',
         'text',
@@ -31,12 +30,10 @@ class ReviewAdmin(admin.ModelAdmin):
     list_editable = ('title',)
     search_fields = ('text',)
     list_filter = ('pub_date',)
-    empty_value_display = '-пусто-'
+    empty_value_display = '-empty-'
 
 
 class TitleAdmin(admin.ModelAdmin):
-    """Управление произведениями"""
-
     list_display = (
         'name',
         'year',
@@ -49,22 +46,16 @@ class TitleAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    """Управление категориями"""
-
     list_display = ('name', 'slug')
     search_fields = ('name',)
 
 
 class GenreAdmin(admin.ModelAdmin):
-    """Управление списком жанров."""
-
     list_display = ('name', 'slug')
     search_fields = ('name',)
 
 
 class GenreTitleAdmin(admin.ModelAdmin):
-    """Управление жанрами произведений."""
-
     list_display = ('pk', 'title', 'genre')
     search_fields = ('title__name',)
     list_editable = ('title', 'genre')

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import (
-    MinValueValidator, MaxValueValidator
+    MaxValueValidator, MinValueValidator
 )
 from django.db import models
 
@@ -12,7 +12,7 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
 
     def __str__(self):
         return self.name
@@ -23,7 +23,7 @@ class Genre(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
 
     def __str__(self):
         return self.name
@@ -42,7 +42,6 @@ class Title(models.Model):
     )
     genre = models.ManyToManyField(
         Genre,
-        verbose_name='Жанр',
         through='GenreTitle'
     )
 
@@ -89,10 +88,10 @@ class Review(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
         constraints = [
             models.UniqueConstraint(
-                fields=['author', 'title'],
+                fields=('author', 'title'),
                 name='unique_review'
             ),
         ]
@@ -118,7 +117,7 @@ class Comment(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
 
     def __str__(self):
         return self.text[:15]

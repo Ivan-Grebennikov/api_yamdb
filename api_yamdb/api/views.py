@@ -2,26 +2,27 @@ from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
+from rest_framework.pagination import PageNumberPagination
 
-from .filters import TitlesFilter
-from .mixins import CreateListDestroyViewSet
-from .pagination import Pagination
-from .permissions import (
-    IsAdminOrReadOnly, IsAuthorOrModeratorOrAdminOrReadOnly
-)
 from reviews.models import (
     Category, Genre, Title, Review
 )
+from .filters import TitlesFilter
+from .mixins import CreateListDestroyViewSet
+from .permissions import (
+    IsAdminOrReadOnly, IsAuthorOrModeratorOrAdminOrReadOnly
+)
+
 from .serializers import (
     CategorySerializer, CommentSerializer, GenreSerializer,
-    TitleReadOnlySerializer, TitleSerializer, ReviewSerializer
+    ReviewSerializer, TitleReadOnlySerializer, TitleSerializer
 )
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (IsAuthorOrModeratorOrAdminOrReadOnly,)
-    pagination_class = Pagination
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         review_id = self.kwargs.get('review_id')
@@ -37,7 +38,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = (IsAuthorOrModeratorOrAdminOrReadOnly,)
-    pagination_class = Pagination
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         title_id = self.kwargs.get('title_id')
@@ -56,7 +57,7 @@ class CategoryViewSet(CreateListDestroyViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
-    pagination_class = Pagination
+    pagination_class = PageNumberPagination
     lookup_field = "slug"
 
 
@@ -66,7 +67,7 @@ class GenreViewSet(CreateListDestroyViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
-    pagination_class = Pagination
+    pagination_class = PageNumberPagination
     lookup_field = "slug"
 
 
@@ -77,7 +78,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = [DjangoFilterBackend]
     filterset_class = TitlesFilter
-    pagination_class = Pagination
+    pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
         if self.action in ("retrieve", "list"):

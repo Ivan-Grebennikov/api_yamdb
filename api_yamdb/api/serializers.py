@@ -14,9 +14,9 @@ class CommentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = ('id', 'text', 'author', 'pub_date',)
+        fields = ('id', 'text', 'author', 'pub_date')
         model = Comment
-        read_only_fields = ('author', 'pub_date',)
+        read_only_fields = ('author', 'pub_date')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -27,9 +27,9 @@ class ReviewSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = ('id', 'text', 'author', 'score', 'pub_date',)
+        fields = ('id', 'text', 'author', 'score', 'pub_date')
         model = Review
-        read_only_fields = ('author', 'pub_date',)
+        read_only_fields = ('author', 'pub_date')
 
     def validate(self, data):
         if Review.objects.filter(
@@ -37,7 +37,8 @@ class ReviewSerializer(serializers.ModelSerializer):
                 author=self.context['request'].user
         ).exists() and self.context['request'].method == 'POST':
             raise serializers.ValidationError(
-                'Нельзя оставить два отзыва на одно произведение')
+                ['User can\'t create two reviews on the same title']
+            )
         return data
 
 
@@ -46,10 +47,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         exclude = ('id',)
-        lookup_field = 'slug'
-        extra_kwargs = {
-            'url': {'lookup_field': 'slug'}
-        }
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -57,10 +54,6 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         exclude = ('id',)
-        lookup_field = 'slug'
-        extra_kwargs = {
-            'url': {'lookup_field': 'slug'}
-        }
 
 
 class TitleReadOnlySerializer(serializers.ModelSerializer):
@@ -73,7 +66,8 @@ class TitleReadOnlySerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
         fields = (
-            'id', 'name', 'year', 'rating', 'description', 'genre', 'category'
+            'id', 'name', 'year', 'rating',
+            'description', 'genre', 'category',
         )
 
 
