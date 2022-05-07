@@ -53,6 +53,7 @@ class CategoryViewSet(CreateListDestroyViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
     pagination_class = Pagination
+    lookup_field = "slug"
 
 
 class GenreViewSet(CreateListDestroyViewSet):
@@ -62,6 +63,7 @@ class GenreViewSet(CreateListDestroyViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name",)
     pagination_class = Pagination
+    lookup_field = "slug"
 
 
 class TitleViewSet(viewsets.ModelViewSet):
