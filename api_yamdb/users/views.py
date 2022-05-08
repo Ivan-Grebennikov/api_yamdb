@@ -33,18 +33,20 @@ class SignupViewSet(viewsets.ViewSet):
         username = request.data.get('username')
         email = request.data.get('email')
 
-        try:
-            user = User.objects.get(username=username, email=email)
-            user.email_user(
+        user = User.objects.filter(
+            username=username, email=email
+        )
+
+        if user.exists():
+            found_user = user[0]
+            found_user.email_user(
                 'Registration confirmation code from YAMDB',
-                f'{user.confirmation_code}'
+                f'{found_user.confirmation_code}'
             )
             return Response(
                 data={'username': username, 'email': email},
                 status=status.HTTP_200_OK
             )
-        except User.DoesNotExist:
-            pass
 
         serializer = UserSerializer(data=request.data)
 

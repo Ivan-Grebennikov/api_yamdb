@@ -7,16 +7,16 @@ app_name = 'users'
 
 v1_router_auth = routers.DefaultRouter()
 v1_router_auth.register(
-    r'signup', SignupViewSet, basename='signup'
+    'signup', SignupViewSet, basename='signup'
 )
 v1_router_auth.register(
-    r'token', TokenViewSet, basename='token'
+    'token', TokenViewSet, basename='token'
 )
 
 
 v1_router_users = routers.DefaultRouter()
 v1_router_users.register(
-    r'users', UserViewSet, basename='users'
+    'users', UserViewSet, basename='users'
 )
 
 

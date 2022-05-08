@@ -9,9 +9,9 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     )
     password = models.CharField(max_length=128, blank=True)
-    confirmation_code = models.CharField(max_length=16)
+    confirmation_code = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=16, choices=ROLES, default='user')
+    role = models.CharField(max_length=50, choices=ROLES, default='user')
     bio = models.TextField(blank=True)
 
     class Meta(AbstractUser.Meta):

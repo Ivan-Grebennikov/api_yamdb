@@ -1,10 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.core.validators import (
     MaxValueValidator, MinValueValidator
 )
 from django.db import models
 
-User = get_user_model()
+from users.models import User
 
 
 class Category(models.Model):
@@ -74,8 +73,14 @@ class Review(models.Model):
     )
     score = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(1),
-            MaxValueValidator(10)
+            MinValueValidator(
+                limit_value=1,
+                message='The score can\'t be less than 1'
+            ),
+            MaxValueValidator(
+                limit_value=10,
+                message='The score can\'t be greater than 10'
+            )
         ]
     )
     pub_date = models.DateTimeField(
